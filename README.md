@@ -25,7 +25,9 @@ RAISED FIST ✊    : Changing signal
 + IN1 (Pin 3): Controls the motor direction (input to the motor driver).
 + IN2 (Pin 5): Controls the motor direction (input to the motor driver).
 
-************* Setup **************
+
+ ---------- Setup ------------
+ 
 The Arduino code initializes the motor pins and waits for serial communication. When a gesture is received, it adjusts the motor speed or stops the motor.
 
 + Connect the DC motor to the L298n motor driver. (Out 1, Out 2)
