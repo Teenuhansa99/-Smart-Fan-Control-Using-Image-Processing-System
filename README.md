@@ -1,64 +1,177 @@
-**Motor Speed Control via Hand Gesture and Python-Arduino Serial Communication**
+# 🪭 Hand Gesture Controlled Fan using Python and Arduino
 
-This project demonstrates how to control the speed of a DC motor using hand gestures detected by Python, which are sent to an Arduino via serial communication. The Arduino receives gesture signals and speed values from Python, processes them, and adjusts the motor's speed and direction accordingly.
-
-**01 Components Used**
-+ Arduino Uno
-+ DC motor
-+ L298N Motor Driver
-+ Python (with OpenCV and MediaPipe for gesture detection)
-+ External 12V/9V power supply
-+ Arduino Code
-The Arduino code receives gestures and motor speed values via serial communication and adjusts the motor's speed accordingly. It supports the following features:
-
-**02 Used Gestures**
-LOVE YOU SIGNAL 🤟: Turn on the motor at a minimum speed
-RAISE HAND 🤚     : Stop the motor.
-THUMB IS DOWN 👎  : Decrease motor speed.
-THUMB IS UP 👍    : Increase motor speed.
-OKAY HAND 👌      : Set a specific motor speed.
-RAISED FIST ✊    : Changing signal
+This project demonstrates how to control the speed of a DC motor (fan) using **hand gestures**, detected using **Python, OpenCV, and MediaPipe**, and then sent to an **Arduino** via serial communication.
+The Arduino processes the gesture signals and adjusts the fan’s speed accordingly.
 
 
-**03 Pin Definitions & Connection**
-+ ENA (Pin 6): Controls the motor speed (PWM).
-+ IN1 (Pin 3): Controls the motor direction (input to the motor driver).
-+ IN2 (Pin 5): Controls the motor direction (input to the motor driver).
+
+## 📌 Table of Contents
+
+* Overview
+* Hardware Requirements
+* Software Requirements
+* Features
+* How It Works
+* Wiring Diagram
+* Connection Setup
+* Arduino Code
+* Python Code
+* Installation
+* Usage
+* Expected Output
+* Additional Notes
+* Project Structure
 
 
- ---------- Setup ------------
- 
-The Arduino code initializes the motor pins and waits for serial communication. When a gesture is received, it adjusts the motor speed or stops the motor.
 
-+ Connect the DC motor to the L298n motor driver. (Out 1, Out 2)
-+ Connect the L298n motor driver to the Arduino (L298n ENA to Arduino PWM pin6, L298n IN1 and IN2 to Arduino PWM 3 and 5)
-+ L298n GND to Arduino GND
-+ L298n 5v to Arduino 5v
-+ L298n 12v to powersupply (9/12v)
+## 🔍 Overview
+
+A webcam detects different hand gestures and sends the gesture commands to the Arduino over serial communication.
+The Arduino controls the fan motor through an L298N motor driver.
 
 
-**04 How to Run the Project**
+### Supported Hand Gestures
 
----------- Arduino ------------
-+ Upload the provided Arduino code to the Arduino Uno.
-+ Ensure that the motor driver and DC motor are connected to the Arduino.
+| Gesture | Meaning                  |
+| ------- | ------------------------ |
+| 🤟      | Fan ON at constant speed |
+| 🤚      | Fan OFF                  |
+| 👎      | Decrease fan speed       |
+| 👍      | Increase fan speed       |
+| 👌      | Set specific fan speed   |
+| ✊       | Mode / signal change     |
 
------------ Python ------------
-+ Install the required Python libraries:
+
+## 🔧 Hardware Requirements
+
+* Arduino Uno
+* L298N Motor Driver
+* DC Motor / Fan Motor
+* Webcam
+* Jumper Wires & Breadboard
+* 9V/12V Motor Power Supply
+
+
+## 💻 Software Requirements
+
+* Python 3.x
+* OpenCV
+* MediaPipe
+* PySerial
+* Arduino IDE
+
+
+## ⭐ Features
+
+* Real-time hand gesture detection via webcam
+* Controls fan ON/OFF
+* Adjusts fan speed (increase/decrease)
+* Uses Python → Arduino communication
+* Smooth PWM motor control
+
+
+## ⚙️ How It Works
+
+### 1. Gesture Detection (Python)
+
+* Python uses **OpenCV + MediaPipe** to detect hand landmarks.
+* Each gesture is classified into a command (ON, OFF, Speed Up, Speed Down).
+
+### 2. Serial Communication
+
+* Python sends commands like `"0"`, `"1"`, `"2"`, `"3"`, or speed values to Arduino.
+
+### 3. Motor Control (Arduino)
+
+* Arduino receives the gesture signal
+* Arduino uses PWM on ENA pin to control the fan speed
+* L298N driver powers the DC motor
+
+
+## 🔌 Wiring Diagram
+
+Arduino Pin 6  → L298N ENA  
+Arduino Pin 3  → L298N IN1  
+Arduino Pin 5  → L298N IN2  
+Arduino GND    → L298N GND  
+Arduino 5V     → L298N 5V  
+12V Supply     → L298N 12V  
+Motor          → L298N OUT1 / OUT2
+
+
+## 🔗 Connection Setup
+
+1. Connect the DC motor to L298N motor driver (OUT1, OUT2)
+2. Connect L298N to Arduino:
+
+   * ENA → Pin 6
+   * IN1 → Pin 3
+   * IN2 → Pin 5
+3. Connect L298N GND to Arduino GND
+4. L298N 5V → Arduino 5V
+5. L298N 12V → External Power Supply (9V/12V)
+
+## 📥 Installation
+
+### 1. Python Setup
+
+Install required libraries:
+
+```
 pip install opencv-python mediapipe pyserial
+```
 
-+ Run the Python script for hand gesture detection:
-Main.py
+### 2. Arduino Setup
 
-+ The Python script will detect gestures and send corresponding speed values to the Arduino.
-
-------------- Expected Output ----------------
-+ When Gesture 1 is detected, the motor will turn on and run at a low speed.
-+ When Gesture 0 is detected, the motor will stop.
-+ Gesture 2 and Gesture 3 will decrease and increase the motor's speed, respectively.
-+ Gesture 4 allows for setting a specific speed for the motor.
+* Install Arduino IDE
+* Upload the provided Arduino code to Arduino Uno
 
 
-**05 Additional Notes**
-+ Ensure the correct COM port is used in the Python code for serial communication with the Arduino.
-+ The motor speed value sent from Python should be between 0 and 255 (for PWM control).
+## ▶️ Usage
+
+Run the Python script:
+
+```
+python hand_gesture_control.py
+```
+
+Make sure the correct COM port is used in your Python code.
+
+### Use these gestures:
+
+| Gesture | Action           |
+| ------- | ---------------- |
+| 🤟      | Fan ON           |
+| 🤚      | Fan OFF          |
+| 👎      | Fan Speed ↓      |
+| 👍      | Fan Speed ↑      |
+| 👌      | Set custom speed |
+| ✊       | Mode change      |
+
+
+## 📊 Expected Output
+
+* **🤟** → Motor starts at a constant ON speed
+* **🤚** → Motor stops
+* **👎** → Motor speed decreases
+* **👍** → Motor speed increases
+* **👌** → Sets a specific speed (0–255 PWM)
+* **✊** → Changes signal mode
+
+
+## 📝 Additional Notes
+
+* Ensure correct **COM port** is selected in Python
+* PWM speed values must be **0–255**
+* Use external power supply for the motor
+* Arduino must remain connected during operation
+
+
+## 📁 Project Structure
+
+Hand-Gesture-Fan-Control/
+│── Arduino/
+│   └── motor_control.ino
+│── Python/
+│   └── hand_gesture_control.py
+└── README.md
