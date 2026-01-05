@@ -1,4 +1,4 @@
-# 🪭  Smart-Fan-Control-Using-Image-Processing System
+# 🪭  Smart Fan Control Using Image Processing System
 
 This project demonstrates how to control the speed of a DC motor (fan) using **hand gestures**, detected using **Python, OpenCV, and MediaPipe**, and then sent to an **Arduino** via serial communication.
 The Arduino processes the gesture signals and adjusts the fan’s speed accordingly.
